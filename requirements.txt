@@ -1,5 +1,6 @@
 aiohttp
 aiomysql
+pymysql
 websockets
 typer[all]
 pydantic
