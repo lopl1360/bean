@@ -3,4 +3,5 @@ aiomysql
 websockets
 typer[all]
 pydantic
+pydantic-settings
 pytest
