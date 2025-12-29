@@ -1,0 +1,6 @@
+aiohttp
+aiomysql
+websockets
+typer[all]
+pydantic
+pytest
