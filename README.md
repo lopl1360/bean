@@ -18,4 +18,6 @@ python -m cli.main
 
 Environment variables such as `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`,
 `MYSQL_PASSWORD`, and `MYSQL_DATABASE` are used to build the MySQL connection URL.
-Defaults are provided for host, port, and user.
+Defaults are provided for host, port, and user. Usernames and passwords are URL-
+encoded automatically so credentials containing special characters will still
+produce a valid connection string.
