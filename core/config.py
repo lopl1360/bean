@@ -3,7 +3,8 @@ from __future__ import annotations
 import functools
 from typing import Optional, Set
 
-from pydantic import BaseSettings, Field, validator
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -40,11 +41,9 @@ class Settings(BaseSettings):
     # Example detector
     example_detector_threshold: float = Field(100.0, env="EXAMPLE_DETECTOR_THRESHOLD")
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
+    model_config = SettingsConfigDict(env_file=".env", case_sensitive=False)
 
-    @validator("alpaca_env")
+    @field_validator("alpaca_env")
     def validate_alpaca_env(cls, value: str) -> str:
         allowed = {"paper", "live"}
         if value not in allowed:
