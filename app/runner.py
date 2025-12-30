@@ -34,7 +34,12 @@ async def run_service(
     symbols = await watchlist_repo.list_symbols(limit=symbols_limit or settings.watchlist_max)
     logger.info("Loaded watchlist", extra={"count": len(symbols)})
 
-    detector_instances = build_detectors(["example_price_cross"], threshold=settings.example_detector_threshold)
+    detector_instances = build_detectors(
+    [
+        {"name": "example_price_cross", "args": {"threshold": settings.example_detector_threshold}},
+        {"name": "bull_flag", "args": {"timeframe_allowlist": ["1m"]}},  # match mapper default
+    ]
+)
     required_channels: Set[str] = set()
     for detector in detector_instances:
         required_channels |= detector.required_channels
@@ -66,6 +71,16 @@ async def run_service(
 
     try:
         async for event in data_source.stream():
+            logger.info(
+                "event",
+                extra={
+                    "type": type(event).__name__,
+                    "symbol": getattr(event, "symbol", None),
+                    "timeframe": getattr(event, "timeframe", None),
+                    "price": getattr(event, "price", None),
+                    "close": getattr(event, "close", None),
+                },
+            )
             for detector in detector_instances:
                 detections = await detector.on_event(event)
                 for detection in detections:

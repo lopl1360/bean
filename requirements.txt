@@ -6,3 +6,4 @@ typer[all]
 pydantic
 pydantic-settings
 pytest
+cryptography
